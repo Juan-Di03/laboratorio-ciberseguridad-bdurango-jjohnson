@@ -37,7 +37,10 @@ class CustomHandler(SimpleHTTPRequestHandler):
         self.wfile.write(html_content.encode("utf-8"))
 
 if __name__ == "__main__":
-    server_address = ("", 8080)
+    port = int(os.getenv("PORT", "10000"))
+    server_address = ("0.0.0.0", port)
     httpd = HTTPServer(server_address, CustomHandler)
-    print("Servidor DMZ iniciado y escuchando en el puerto 8080...")
+    print(f"Servidor DMZ iniciado y escuchando en el puerto {port}...")
     httpd.serve_forever()
+
+
