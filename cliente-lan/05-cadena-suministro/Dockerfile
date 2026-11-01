@@ -1,16 +1,14 @@
-FROM alpine:latest
-
-RUN apk add --no-cache curl python3
+FROM python:3.12-alpine
 
 WORKDIR /app
-
-# Simulamos la descarga de una dependencia maliciosa en la cadena de suministro
-RUN echo "echo '[PAYLOAD ADVERSARIO] Dependencia maliciosa ejecutándose con privilegios del contenedor...'" > /app/malicious_dependency.sh && \
-    chmod +x /app/malicious_dependency.sh
-
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+RUN pip install --no-cache-dir pip-audit==2.10.1
+COPY requirements.txt /app/requirements.txt
+COPY app.py /app/app.py
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
-EXPOSE 8080
-
+ENV PORT=10000
+EXPOSE 10000
 ENTRYPOINT ["/app/entrypoint.sh"]

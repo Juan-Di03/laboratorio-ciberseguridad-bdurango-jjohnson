@@ -1,13 +1,10 @@
-FROM alpine:latest
-
-# Instalamos netcat para el escaneo de puertos y python3 para mantener vivo el servicio
-RUN apk add --no-cache netcat-openbsd python3 bind-tools
+FROM python:3.12-alpine
 
 WORKDIR /app
-
+COPY app.py /app/app.py
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
-EXPOSE 8080
-
+ENV PORT=10000
+EXPOSE 10000
 ENTRYPOINT ["/app/entrypoint.sh"]

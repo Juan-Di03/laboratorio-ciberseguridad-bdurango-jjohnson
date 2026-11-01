@@ -1,12 +1,10 @@
-FROM python:alpine
-
-# Instalamos Flask y Requests para construir el proxy interceptor
-RUN pip install --no-cache-dir flask requests
+FROM python:3.12-alpine
 
 WORKDIR /app
-
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r /app/requirements.txt
 COPY app.py /app/app.py
 
-EXPOSE 8080
-
+ENV PORT=10000
+EXPOSE 10000
 CMD ["python", "app.py"]
